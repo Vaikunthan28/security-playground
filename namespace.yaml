@@ -1,16 +1,13 @@
+# k8s/namespace.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: security-lab
+  labels:
+    # Pod Security Admission - warns if pod violates baseline security standards
+    pod-security.kubernetes.io/warn: baseline
+    pod-security.kubernetes.io/warn-version: latest
 
-<pre style="background:var(--color-background-secondary);border:1px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.2rem 1.4rem;font-family:var(--font-mono);font-size:13px;line-height:1.7;color:var(--color-text-primary);overflow-x:auto;margin:0">
-<span style="color:var(--color-text-secondary)"># k8s/namespace.yaml</span>
-<span style="color:#5DCAA5">apiVersion</span>: v1
-<span style="color:#5DCAA5">kind</span>: Namespace
-<span style="color:#5DCAA5">metadata</span>:
-  <span style="color:#5DCAA5">name</span>: security-lab
-  <span style="color:#5DCAA5">labels</span>:
-    <span style="color:var(--color-text-secondary)"># Pod Security Admission - warns if pod violates baseline security standards</span>
-    <span style="color:#5DCAA5">pod-security.kubernetes.io/warn</span>: baseline
-    <span style="color:#5DCAA5">pod-security.kubernetes.io/warn-version</span>: latest
-
-    <span style="color:var(--color-text-secondary)"># Audit mode logs violations without blocking - good for learning</span>
-    <span style="color:#5DCAA5">pod-security.kubernetes.io/audit</span>: baseline
-    <span style="color:#5DCAA5">pod-security.kubernetes.io/audit-version</span>: latest
-</pre>
+    # Audit mode logs violations without blocking - good for learning
+    pod-security.kubernetes.io/audit: baseline
+    pod-security.kubernetes.io/audit-version: latest
