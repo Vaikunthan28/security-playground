@@ -1,0 +1,40 @@
+# k8s/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: security-playground
+  namespace: security-lab
+  labels:
+    app: security-playground
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: security-playground
+  template:
+    metadata:
+      labels:
+        app: security-playground
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+      containers:
+        - name: security-playground
+          image: sysdiglabs/security-playground:latest
+          ports:
+            - containerPort: 8080
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            capabilities:
+              drop:
+                - ALL
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
+            limits:
+              memory: "128Mi"
+              cpu: "200m"
