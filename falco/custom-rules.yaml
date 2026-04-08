@@ -1,0 +1,38 @@
+# falco/custom-rules.yaml
+customRules:
+  rules-security-playground.yaml: |-
+    - rule: Sensitive File Read in Security Playground
+      desc: Detects reading of sensitive files inside the security-playground container
+      condition: >
+        open_read
+        and container.name = "security-playground"
+        and fd.name in (/etc/shadow, /etc/passwd, /etc/sudoers)
+      output: >
+        Sensitive file read detected
+        (user=%user.name file=%fd.name container=%container.name pod=%k8s.pod.name)
+      priority: WARNING
+      tags: [security-playground, file-read]
+
+    - rule: Shell Command Executed in Security Playground
+      desc: Detects shell commands executed via the exec endpoint
+      condition: >
+        spawned_process
+        and container.name = "security-playground"
+        and proc.name in (sh, bash, python, python3)
+      output: >
+        Shell execution detected
+        (user=%user.name command=%proc.cmdline container=%container.name pod=%k8s.pod.name)
+      priority: CRITICAL
+      tags: [security-playground, exec]
+
+    - rule: File Written in Security Playground
+      desc: Detects file writes inside the security-playground container
+      condition: >
+        open_write
+        and container.name = "security-playground"
+        and not fd.name startswith /tmp
+      output: >
+        File write detected
+        (user=%user.name file=%fd.name container=%container.name pod=%k8s.pod.name)
+      priority: WARNING
+      tags: [security-playground, file-write]

@@ -1,0 +1,21 @@
+# k8s/networkpolicy.yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: security-playground-netpol
+  namespace: security-lab
+spec:
+  podSelector:
+    matchLabels:
+      app: security-playground
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: 8080
+  egress:
+    - ports:
+        - protocol: UDP
+          port: 53
